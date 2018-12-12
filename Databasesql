@@ -1,0 +1,61 @@
+DROP TABLE IF EXISTS[Projects];
+DROP TABLE IF EXISTS[Task];
+DROP TABLE IF EXISTS[Teammates];
+
+-- Creates Teammates Table 
+
+CREATE TABLE IF NOT EXISTS Teammates
+(
+    TeammateId INTEGER PRIMARY KEY,
+    FirstName TEXT NOT NULL,
+    LastName TEXT NOT NULL,
+    TimeSpent TIME NOT NULL,
+    Title TEXT NOT NULL
+);
+
+-- Inserts data into Teammates Table.  I put this first to avoid errors with foreign keys
+
+INSERT INTO Teammates (TeammateId, FirstName, LastName, TimeSpent, Title)
+VALUES ('1111', 'Dwayne', 'Johnson', '02:00:00', 'Lead Member'),
+       ('1112', 'O.J', 'Simpson', '04:00:00', 'Lead Member'),
+       ('1113', 'Tom', 'Cruise', '06:00:00', 'Lead Member');
+
+-- Creates Task Table
+
+CREATE TABLE IF NOT EXISTS Task
+(
+    TaskId INTEGER PRIMARY KEY,
+    TaskInfo TEXT NOT NULL,
+    TimeRequired TIME NOT NULL,
+    CompletionTime TIME NULL,
+    TaskStatus TEXT NOT NULL,
+    TeammateId INTEGER REFERENCES Teammates(TeammateId)
+);
+
+-- Adds required Data to The task table 
+
+INSERT INTO Task (TaskId, TaskInfo, TimeRequired, CompletionTIme, TaskStatus, TeammateId)
+VALUES ('001', 'Fix Network', '02:15:00', '02:00:00', 'Complete', 1111),
+       ('002', 'Update Database', '05:00:00', '04:00:00', 'Complete', 1112),
+       ('003', 'Implement Patches/Fix bugs', '10:30:00', null, 'Incomplete', 1113);
+
+--Creates Projects Table
+
+CREATE TABLE IF NOT EXISTS Projects
+(
+    ProjectId INTEGER PRIMARY KEY,
+    LeadName TEXT NULL,
+    ProjectInfo TEXT NOT NULL,
+    ProjectStatus TEXT NOT NULL,
+    TaskId INTEGER REFERENCES Task(TaskID)
+    );
+    
+-- Adds required data for projects table
+
+INSERT INTO Projects (ProjectId, LeadName, ProjectInfo, ProjectStatus, TaskId)
+VALUES ('1', 'Dwayne Johnson', 'Network Maintenance', 'Complete', 001),
+       ('2', 'O.J. Simpson', 'Database Maintenance', 'Complete', 002),
+       ('3', 'Tom Cruise', 'System Update', 'Incomplete', 003);
+    
+
+
